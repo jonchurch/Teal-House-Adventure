@@ -29,6 +29,8 @@ Room.prototype.onEnter = function(){
   self = this;
 
   if (self.isQuitRoom === true) { //Check if Win Room
-      
+
   }
 };
+
+module.exports = Room;
