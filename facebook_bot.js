@@ -78,6 +78,7 @@ if (!process.env.verify_token) {
 
 var Botkit = require('botkit');
 var os = require('os');
+var Player = require('./Models/player');
 
 var controller = Botkit.facebookbot({
     debug: false,
@@ -85,31 +86,44 @@ var controller = Botkit.facebookbot({
     verify_token: process.env.verify_token,
 });
 
-var bot = controller.spawn({debug: false});
+var bot = controller.spawn({ debug: false });
 
 controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
     controller.createWebhookEndpoints(webserver, bot, function() {
         console.log('ONLINE!');
-        
-        }
-    );
+
+    });
 });
 
 var players = [];
 
+function look(player_id, args) {
+    var user = players[player_id];
+    var result;
+    if (!args) {
+        result = user.current_location;
+    }
+}
 
 
 
-controller.hears('look', 'message_received', function(bot, message) {
-    var user = players[message.user];
 
-    // bot.reply(message.);
-    return;
-});
+controller.hears(['look'], 'message_received', function(bot, message) {
+
+            // var response = look(player_id);
+            controller.storage.users.get(message.user, function(err, user) {
+                if (!user) {
+                    user = new Player(message.user);
+                    controller.storage.users.save(user, function(err, id){
+                    console.log('User Saved!');  
+                });
+                }
+
+                console.log(user);
+
+                bot.reply(message, user.current_location.desc);
+                return;
+            });
+        });
 
 
-controller.on('message_received', function(bot, message) {
-    bot.reply(message, 'Hello Input!');
-
-    return false;
-});
