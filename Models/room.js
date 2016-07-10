@@ -1,12 +1,12 @@
-var Room = function() {
+var Room = function(vnum, name, desc, exits, items, win) {
 
     var self = this;
-    self.vnum = vnum;
-    self.name = name;
-    self.desc = desc;
+    self.vnum = vnum || 'string';
+    self.name = name || 'string'; 
+    self.desc = desc || 'string';
 
-    self.exits = exits;
-    self.items = items;
+    self.exits = exits || ["objects"];
+    self.items = items || ['strings'];
     self.isQuitRoom = win || false;
 
 };
