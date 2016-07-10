@@ -84,7 +84,7 @@ var controller = Botkit.facebookbot({
     debug: false,
     access_token: process.env.page_token,
     verify_token: process.env.verify_token,
-    // json_file_store: './storage.json'
+    json_file_store: 'storage.json'
 });
 
 var bot = controller.spawn();
@@ -124,18 +124,16 @@ controller.hears(['look'], 'message_received', function(bot, message) {
                     console.log('User Saved!');  
                 });
                 }
-
-                console.log('User Recognized!');
-
                 bot.reply(message, user.current_location.desc);
                 return;
             });
         });
 
-controller.hears(['inv'], 'message_received', function(bot, message) {
+controller.hears('inv', 'message_received', function(bot, message) {
     var result;
     controller.storage.users.get(message.user, function(err, user) {
         console.log(user);
-        result = user.printInv();
+        // result = user.printInv();
+        // bot.reply(message, result);
     });
 });

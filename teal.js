@@ -11,7 +11,7 @@ var tealHouse = {
       "exits": {
         "south": "quiet"
       },
-      "objects": {
+      "items": {
         "drug": "Rolled up tube of sand and plants",
           "spoon": "This spoon is shiny and tiny. Could fit easily into a jar of peanut butter",
           "magazine": "The cover reads, Glue Enthusiasts Quarterly, issue #352. The pages are stuck together firmly"
