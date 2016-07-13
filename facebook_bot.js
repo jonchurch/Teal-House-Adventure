@@ -87,6 +87,9 @@ var controller = Botkit.facebookbot({
     json_file_store: 'storage.json'
 });
 
+var EventEmitter = require('events').EventEmitter;
+var eventEmitter = new EventEmitter();
+
 var bot = controller.spawn();
 
 controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
@@ -123,6 +126,16 @@ function look(player_id, args) {
     }
 }
 
+eventEmitter.on('data', function(message) {
+  console.log('heard your data!');
+  console.log('Message data\n', message);
+});
+
+
+
+controller.on('message_received', function(bot, message){
+    eventEmitter.emit('data', message);
+});
 
 
 
