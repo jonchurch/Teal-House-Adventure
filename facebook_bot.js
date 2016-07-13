@@ -96,7 +96,24 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
     });
 });
 
-var players = [];
+var pizzajon = new Player('1065790080167642', {
+    id: '1065790080167642',
+    inv: [{
+        "name": "pizza",
+        "desc": "Single slice of the good stuff, cheese and sardine!",
+        "isLoot": 1,
+        "uuid": "666"
+
+    }, {
+        "name": "dust",
+        "desc": "Almost like sand, but not as tasty",
+        "isLoot": 1,
+        "uuid": "777"
+
+    }],
+    win: false,
+    current_location: { desc: 'Absolutely no sex is allowed here. There are chairs arranged around a coffee table with magazines in the center of the room. There is one drug on the table next to a spoon' }
+});
 
 function look(player_id, args) {
     var user = players[player_id];
@@ -111,29 +128,32 @@ function look(player_id, args) {
 
 controller.hears(['look'], 'message_received', function(bot, message) {
 
-            // var response = look(player_id);
-            controller.storage.users.get(message.user, function(err, user) {
-                console.log('User Passed from storage: \n',user);
-                if (!user) {
-                    user = new Player(message.user);
-                    controller.storage.users.save(user, function(err, id){
-                        if (err) {
-                            console.log(err);
-                            return;
-                        }
-                    console.log('User Saved!');  
-                });
-                }
-                bot.reply(message, user.current_location.desc);
-                return;
-            });
-        });
-
-controller.hears('inv', 'message_received', function(bot, message) {
-    var result;
     controller.storage.users.get(message.user, function(err, user) {
-        console.log(user);
-        // result = user.printInv();
-        // bot.reply(message, result);
+
+        // var player = getPlayer(message.user);
+        bot.reply(message, pizzajon.current_location.desc);
+        return;
     });
 });
+
+controller.hears('me', 'message_received', function(bot, message) {
+    console.log(message);
+    bot.reply(message, 'Check your logs!');
+});
+
+controller.hears('inv', 'message_received', function(bot, message) {
+    result = 'Inventory: ' + pizzajon.getInv().join(', ');
+    bot.reply(message, result);
+});
+
+function getPlayer(userID) {
+    controller.storage.users.get(userID, function(err, user) {
+        var result;
+        if (!user) {
+            console.log('No user found!');
+            return;
+        } else {
+            return new Player(user.id, user);
+        }
+    });
+}
