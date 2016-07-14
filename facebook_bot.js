@@ -99,20 +99,13 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
     });
 });
 
-var pizzajon = new Player('1065790080167642', {
-    id: '1065790080167642',
+var pizzajon = new Player(process.env.pizzaid, {
+    id: process.env.pizzaid,
     inv: [{
         "name": "pizza",
         "desc": "Single slice of the good stuff, cheese and sardine!",
         "isLoot": 1,
         "uuid": "666"
-
-    }, {
-        "name": "dust",
-        "desc": "Almost like sand, but not as tasty",
-        "isLoot": 1,
-        "uuid": "777"
-
     }],
     win: false,
     current_location: { desc: 'Absolutely no sex is allowed here. There are chairs arranged around a coffee table with magazines in the center of the room. There is one drug on the table next to a spoon' }
@@ -126,15 +119,29 @@ function look(player_id, args) {
     }
 }
 
-eventEmitter.on('data', function(message) {
-  console.log('heard your data!');
-  console.log('Message data\n', message);
+//Beginnings of a commands loop
+eventEmitter.on('data', function(bot, message) { //this could be on 'message_receieved', or I can do my own thing seperately like 'data'
+    //split the input into command and arguements
+    var data = message.text;
+    var command = data.split(' ').shift();
+    var args = data.split(' ').slice(1).join(' ');
+    //Match command against Commands.player_commands @array
+    //Do whatever you need to if command !=== something in Command.player_commands
+    //like search for command in exit or skills
+    if (!(command in Commands.player_commands)) {
+        //look for exits
+    }
+    //If command IS found in Commands.player_commands, execute it!
+    else {
+        //call Commands.player_commands[command](args, player)
+        Commands.player_commands[command](args, player, bot);
+    }
 });
 
 
 
-controller.on('message_received', function(bot, message){
-    eventEmitter.emit('data', message);
+controller.on('message_received', function(bot, message) {
+    eventEmitter.emit('data', bot, message);
 });
 
 
@@ -142,7 +149,6 @@ controller.on('message_received', function(bot, message){
 controller.hears(['look'], 'message_received', function(bot, message) {
 
     controller.storage.users.get(message.user, function(err, user) {
-
         // var player = getPlayer(message.user);
         bot.reply(message, pizzajon.current_location.desc);
         return;

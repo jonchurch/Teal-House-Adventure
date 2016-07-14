@@ -1,0 +1,22 @@
+
+#Commands
+
+* look
+* get
+* help
+* drop
+* {{exits}}
+
+I need to create ways to access the objects with their associated methods intact.
+
+This likely means using constructor functions
+
+Ranvier uses an array full of rooms, and a getAt(indexNum) to return the full instance of a Room. 
+How do I put those rooms into an object?
+Currently I am storing my rooms in a js file called teal.js
+
+I will need a rooms@object, player@object, and a room@object
+
+First up is the Player constructor! I think it's a good idea to create a load function for my new Player instances, I can load the data which I am already saving into the botkit storage.
+
+self.load(config){ self.vum = blah }

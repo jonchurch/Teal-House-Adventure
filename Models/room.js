@@ -1,20 +1,29 @@
-var Room = function(vnum, name, desc, exits, items, win) {
+var Room = function(config) {
 
-    var self = this;
-    self.vnum = vnum || 'string';
-    self.name = name || 'string'; 
-    self.desc = desc || 'string';
+    this.vnum = '';
+    this.name ='';
+    this.desc ='';
 
-    self.exits = exits || ["objects"];
-    self.items = items || ['strings'];
-    self.isQuitRoom = win || false;
+    this.exits = [];
+    this.items = [];
+    this.isQuitRoom = false;
+
+};
+
+Room.prototype.load = function(config) {
+    this.vnum = config.vnum;
+    this.name = config.name;
+    this.desc = config.desc;
+
+    this.exits = config.exits;
+    this.items = config.items;
+    this.isQuitRoom = config.isQuitRoom;
 
 };
 
 Room.prototype.removeItem = function(item) {
-    self = this;
-    if (self.items[item]) {
-        delete self.items[item];
+    if (this.items[item]) {
+        delete this.items[item];
         return;
     }
 };
@@ -26,11 +35,15 @@ Room.prototype.addItem = function(item) {
 
 
 Room.prototype.onEnter = function(){
-  self = this;
 
-  if (self.isQuitRoom === true) { //Check if Win Room
+  if (this.isQuitRoom === true) { //Check if Win Room
 
   }
+};
+
+//Added this for our look command
+Room.prototype.getDescription = function() {
+  return this.desc;
 };
 
 module.exports = Room;
