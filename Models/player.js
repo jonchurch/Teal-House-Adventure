@@ -10,6 +10,8 @@ var Player = function() {
 
 };
 
+Player.prototype.getId = function(){ return this.id; };
+
 Player.prototype.getLoc = function(){ return this.location; };
 
 
@@ -40,7 +42,7 @@ Player.prototype.load = function(config) {
     this.id = config.id;
     this.inv = config.inv;
     this.win = config.win;
-    this.current_location = config.location;
+    this.location = config.location;
 
 };
 module.exports = Player;

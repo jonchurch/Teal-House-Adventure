@@ -6,19 +6,29 @@ var Commands = {
          * @param  {object} player Player instance
          * @param  {object} bot    Messenger method?
          */
-        help: function(args, player, bot) {
-            console.log('Help command is getting this player object\n', player);
-            bot.say({ text: 'Your plea for help has been heard puny human. Now what?', channel: player.id});
+        help: function(args, rooms, player, bot) {
+            bot.say({ text: 'Your plea for help has been heard puny human. Now what?', channel: player.id });
 
         },
 
-        //send look any args and the player object who called it
-        look: function(args, player, bot) {
-
+        /**
+         * Sends description of room if no args, desc of args if args
+         * @param  {string} args   Command args from player
+         * @param  {object} rooms  Rooms object
+         * @param  {object} player Current player object
+         * @param  {object} bot    Messaging object
+         */
+        look: function(args, rooms, player, bot) {
+            var room = rooms.getAt(player.getLoc());
             if (args) {
-                console.log('Clever, aren\'t you? Args present!');
+                console.log('args in look:',args);
+                bot.say({
+                    text: 'Clever, aren\'t you? Args present!',
+                    channel: player.getId()
+                });
+                return;
             } else {
-                bot.reply(message, player.current_location);
+                bot.say({text: room.getDescription(), channel: player.getId()});
                 //Could do this like below, where the Messenger handles all communcation
                 //Messenger.send(player, room.getDescription);
 

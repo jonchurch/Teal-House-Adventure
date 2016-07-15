@@ -147,7 +147,7 @@ eventEmitter.on('data', function(bot, message, rooms, player) { //this could be 
     //If command IS found in Commands.player_commands, execute it!
     else {
         //call Commands.player_commands[command](args, player)
-        Commands.player_commands[command](args, player, bot);
+        Commands.player_commands[command](args, rooms, player, bot);
     }
 });
 
@@ -155,6 +155,10 @@ eventEmitter.on('data', function(bot, message, rooms, player) { //this could be 
 
 controller.on('message_received', function(bot, message) {
   var player;
+  if (message.user === '159939171089467') {
+    return;
+  }
+  
 controller.storage.users.get(message.user, function(err, user){
   console.log('user from storage=\n', user);
   if (!user) {
@@ -172,19 +176,6 @@ controller.storage.users.get(message.user, function(err, user){
 } );
 });
 
-
-
-controller.hears(['look'], 'message_received', function(bot, message) {
-
-    controller.storage.users.get(message.user, function(err, user) {
-        // var player = getPlayer(message.user);
-        var player = new Player();
-        player.load(user);
-        var room = rooms.getAt(player.getLoc());
-        bot.reply(message, room.getDescription());
-        return;
-    });
-});
 
 controller.hears('me', 'message_received', function(bot, message) {
     console.log(message);

@@ -22,18 +22,17 @@ var Rooms = function() {
 
     this.init = function() {
         var rooms_data = require('../teal.js');
-        var rooms = [];
         for (i = 0; i < rooms_data.length; i += 1) {
             var config = rooms_data[i];
             var room = new Room();
             // console.log(config);
             room.load(config);
-            rooms.push(room);
+            this.rooms.push(room);
         }
         console.log('The rooms were just loaded!');
     };
     this.getAt = function(location) {
-        return location in this.rooms ? this.rooms[location] : false;
+        return this.rooms[location]; //? this.rooms[location] : false;
     };
 
 };
