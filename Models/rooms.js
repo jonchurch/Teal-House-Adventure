@@ -82,13 +82,10 @@ Room.prototype.onEnter = function() {
 };
 
 //Added this for our look command
-Room.prototype.getDescription = function() {
-    return this.desc;
-};
-
-Room.prototype.getLoc = function(location) {
-    return this.vnum;
-};
+Room.prototype.getDescription = function() { return this.desc; };
+Room.prototype.getExits = function(){ return this.exits; };
+Room.prototype.getLoc = function() { return this.vnum; };
+Rooms.prototype.getItems = function() { return this.items; };
 module.exports =  Rooms;
 
 

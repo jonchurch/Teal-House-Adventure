@@ -10,9 +10,7 @@ var tealHouse = [
       "action": {
           "take drug": "Better take this so no one gets hurt"
       },
-      "exits": {
-        "south": "quiet"
-      },
+      "exits": [{"location": 1, "direction": "south"}],
       "items": {
         "drug": "Rolled up tube of sand and plants",
           "spoon": "This spoon is shiny and tiny. Could fit easily into a jar of peanut butter",
@@ -28,10 +26,8 @@ var tealHouse = [
       "action": {
           "use drug": "The drug is unlit"
       },
-      "exits": {
-        "north": "champ",
-        "west": "sun"
-      },
+      "exits": [{"location": 0, "direction": "north"},
+                 {"location": 2, "direction": "west"}],
       "items": {
         "plant": "These plants look like they've been here a long time",
         "art": "Not quite to your taste, but a good atempt all the same"
@@ -47,10 +43,7 @@ var tealHouse = [
           "pet stingray": "Your pats seem appreciated as it coos slightly and nuzzles against your hand",
           "take sand": "You fill your pockets greedily"
       },
-      "exits": {
-        "east": "quiet"
-        
-      },
+      "exits": [{"location": 1, "direction": "east"}],
       "items": {
         "stingray": "Such a beautiful and misunderstood creature",
           "sand": "This is the good stuff. Pure Columbia by the looks of it"

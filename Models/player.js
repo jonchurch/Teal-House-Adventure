@@ -45,4 +45,6 @@ Player.prototype.load = function(config) {
     this.location = config.location;
 
 };
+Player.prototype.setLoc = function(vnum){ this.location = vnum;  };
+Player.prototype.save = function() {};
 module.exports = Player;
