@@ -20,3 +20,10 @@ I will need a rooms@object, player@object, and a room@object
 First up is the Player constructor! I think it's a good idea to create a load function for my new Player instances, I can load the data which I am already saving into the botkit storage.
 
 self.load(config){ self.vum = blah }
+
+I added the aforementioned load functons for my beautiful constructors!
+
+How can I create a map object, or rooms object, which will contain all my rooms, and allow me to access them as objects?
+
+I am now loading an array called rooms with Room instances that are loaded with the config data from my teal.js file.
+I could do this game initialization stuff in a Game module that automatically instantiates that array on startup... Because putting that code at the top of my facebook_bot file seems cluttered. 

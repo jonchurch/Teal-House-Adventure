@@ -1,6 +1,8 @@
-var tealHouse = {
-
-    "champ": {
+var tealHouse = [
+//I made the list of rooms an array so I could find them by their vnum,
+// which will (hopefully?) correspond to their index number
+// This structure, of loading the file I have here, seems like a bit of work for what I need to do...
+    {
       "vnum": 0,
       "name": "Champagne Room",
       "desc": "Absolutely no sex is allowed here. There are chairs arranged around a coffee table with magazines in the center of the room. There is one drug on the table next to a spoon.",
@@ -16,9 +18,9 @@ var tealHouse = {
           "spoon": "This spoon is shiny and tiny. Could fit easily into a jar of peanut butter",
           "magazine": "The cover reads, Glue Enthusiasts Quarterly, issue #352. The pages are stuck together firmly"
       },
-      "mobile": null
+      "isQuitRoom": false
 },
-  "quiet": {
+ {
     "vnum": 1,
       "name": "Quiet Room",
       "desc": "The walls are covered with art that seems misguided. This room is for relaxing, and you can tell. Plants grow from the ceiling in long vines.",
@@ -30,13 +32,13 @@ var tealHouse = {
         "north": "champ",
         "west": "sun"
       },
-      "objects": {
+      "items": {
         "plant": "These plants look like they've been here a long time",
         "art": "Not quite to your taste, but a good atempt all the same"
       },
-      "mobile": null
+      "isQuitRoom": false
 },  
-    "sun": {
+    {
       "vnum": 2,
       "name": "Sun Room",
       "desc": "Light spills in from the 3 walls of windows around you. There is a large pile of sand with a stingray floating lazily above it",
@@ -49,13 +51,13 @@ var tealHouse = {
         "east": "quiet"
         
       },
-      "objects": {
+      "items": {
         "stingray": "Such a beautiful and misunderstood creature",
           "sand": "This is the good stuff. Pure Columbia by the looks of it"
       },
-      "mobile": null
+      "isQuitRoom": false
 },
 
-} ;//end top level object
+] ;//end top level array
 
 module.exports = tealHouse;

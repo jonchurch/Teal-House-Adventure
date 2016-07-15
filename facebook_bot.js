@@ -98,6 +98,18 @@ controller.setupWebserver(process.env.port || 3000, function(err, webserver) {
 
     });
 });
+/*
+Instantiating the rooms array
+ */
+var Rooms =  require('./Models/rooms');
+var rooms = new Rooms();
+rooms.init();
+
+var Commands = require('./Models/commands');
+
+
+// console.log(rooms);
+
 
 var pizzajon = new Player(process.env.pizzaid, {
     id: process.env.pizzaid,
@@ -120,10 +132,11 @@ function look(player_id, args) {
 }
 
 //Beginnings of a commands loop
-eventEmitter.on('data', function(bot, message) { //this could be on 'message_receieved', or I can do my own thing seperately like 'data'
+eventEmitter.on('data', function(bot, message, rooms, player) { //this could be on 'message_receieved', or I can do my own thing seperately like 'data'
     //split the input into command and arguements
     var data = message.text;
     var command = data.split(' ').shift();
+    console.log('Command=',command);
     var args = data.split(' ').slice(1).join(' ');
     //Match command against Commands.player_commands @array
     //Do whatever you need to if command !=== something in Command.player_commands
@@ -141,7 +154,22 @@ eventEmitter.on('data', function(bot, message) { //this could be on 'message_rec
 
 
 controller.on('message_received', function(bot, message) {
-    eventEmitter.emit('data', bot, message);
+  var player;
+controller.storage.users.get(message.user, function(err, user){
+  console.log('user from storage=\n', user);
+  if (!user) {
+    player = new Player();
+    player.id = message.user;
+    controller.storage.users.save(player);
+    console.log('saved new user!\n', player);
+  } 
+  else {
+    player = new Player();
+    player.load(user);
+    console.log('Loaded existing player!\n', player);
+  }
+  eventEmitter.emit('data', bot, message, rooms, player);
+} );
 });
 
 
@@ -150,7 +178,10 @@ controller.hears(['look'], 'message_received', function(bot, message) {
 
     controller.storage.users.get(message.user, function(err, user) {
         // var player = getPlayer(message.user);
-        bot.reply(message, pizzajon.current_location.desc);
+        var player = new Player();
+        player.load(user);
+        var room = rooms.getAt(player.getLoc());
+        bot.reply(message, room.getDescription());
         return;
     });
 });

@@ -6,9 +6,11 @@ var Player = function() {
     this.id = '';
     this.inv = [];
     this.win = false;
-    this.location = '';
+    this.location = 0;
 
 };
+
+Player.prototype.getLoc = function(){ return this.location; };
 
 
 /**

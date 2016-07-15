@@ -7,6 +7,8 @@ var Commands = {
          * @param  {object} bot    Messenger method?
          */
         help: function(args, player, bot) {
+            console.log('Help command is getting this player object\n', player);
+            bot.say({ text: 'Your plea for help has been heard puny human. Now what?', channel: player.id});
 
         },
 
@@ -25,3 +27,5 @@ var Commands = {
         get: function() {}
     }
 };
+
+module.exports = Commands;
