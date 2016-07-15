@@ -6,7 +6,7 @@ var Commands = {
          * @param  {object} player Player instance
          * @param  {object} bot    Messenger method?
          */
-        help: function(args, rooms, player, bot) {
+        help: function(args, rooms, player, players, bot) {
             bot.say({ text: 'Your plea for help has been heard puny human. Now what?', channel: player.id });
 
         },
@@ -18,7 +18,7 @@ var Commands = {
          * @param  {object} player Current player object
          * @param  {object} bot    Messaging object
          */
-        look: function(args, rooms, player, bot) {
+        look: function(args, rooms, player, players, bot) {
             var room = rooms.getAt(player.getLoc());
             if (args) {
                 console.log('args in look:',args);
@@ -37,13 +37,13 @@ var Commands = {
 
             }
         },
-        inv: function(args, rooms, player, bot) {
+        inv: function(args, rooms, player, players, bot) {
             bot.say({text: player.getInv().join(', '),
              channel: player.getId()
          });
         },
         //Come back to this after we work on Items
-        get: function(args, rooms, player, bot) {
+        get: function(args, rooms, player, players, bot) {
             var room = rooms.getAt(player.getLoc());
             var item;
             if (!args) {
@@ -52,7 +52,7 @@ var Commands = {
             }
             if (room.getItemInRoom(item)) {}
         },
-    room_exits: function(args, rooms, player, bot) {
+    room_exits: function(args, rooms, player, players, bot) {
         console.log('Checking exits!');
         var room = rooms.getAt(player.getLoc());
         var exits = room.getExits().filter(function (e) {
@@ -71,20 +71,21 @@ var Commands = {
             bot.say({text: "Where did you say exactly?", channel: player.getId()});
             return;
         }
-        move(exits.pop(), rooms, player, bot);
+        move(exits.pop(), rooms, player, players, bot);
     }
     }
 };
 
 module.exports = Commands;
 
-function move(exit, rooms, player, bot){
+function move(exit, rooms, player, players, bot){
     var room = rooms.getAt(exit.location);
     if (!room) {
         console.log('=========Player in limbo!!', player);
         return;
     }
     player.setLoc(exit.location);
-    Commands.player_commands.look(null, rooms, player, bot);
+    Commands.player_commands.look(null, rooms, player, players, bot);
+    console.log(players);
 }
 

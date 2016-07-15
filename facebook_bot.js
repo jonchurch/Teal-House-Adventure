@@ -106,10 +106,11 @@ var Rooms = require('./Models/rooms');
 var rooms = new Rooms();
 rooms.init();
 
+var _ = require('lodash');
 var Commands = require('./Models/commands');
 
 //Beginnings of a commands loop
-eventEmitter.on('data', function(bot, message, rooms, player) { //this could be on 'message_receieved', or I can do my own thing seperately like 'data'
+eventEmitter.on('data', function(bot, message, rooms, player, players) { //this could be on 'message_receieved', or I can do my own thing seperately like 'data'
     //split the input into command and arguements
     var data = message.text.toLowerCase();
     var command = data.split(' ').shift();
@@ -119,11 +120,11 @@ eventEmitter.on('data', function(bot, message, rooms, player) { //this could be 
     //Do whatever you need to if command !=== something in Command.player_commands
     //like search for command in exit or skills
     if (!(command in Commands.player_commands)) {
-        Commands.player_commands.room_exits(command, rooms, player, bot);
+        Commands.player_commands.room_exits(command, rooms, player, players, bot);
     }
     //If command IS found in Commands.player_commands, execute it!
     else {
-        Commands.player_commands[command](args, rooms, player, bot);
+        Commands.player_commands[command](args, rooms, player, players, bot);
     }
 });
 
@@ -134,13 +135,20 @@ controller.on('message_received', function(bot, message) {
     if (message.user === '159939171089467') {
         return;
     }
-    if (!players[message.user]) { //look in db for data 
+    var found = _.find(players, ["id", message.user]);
+    console.log('====FOUND:',found);
+    console.log('=====PLAYERS:',players);
+
+    if (!_.find(players, ["id", message.user])) { //look in db for data 
         controller.storage.users.get(message.user, function(err, user) {
             console.log('user from storage=\n', user);
             if (!user) {
                 player = new Player();
                 player.id = message.user;
-                controller.storage.users.save(player);
+                var player_id = player.getId();
+                var user_new = { player_id: player};
+                
+                controller.storage.users.save(user_new);
                 console.log('saved new user!\n', player);
             } else {
                 player = new Player();
@@ -148,12 +156,12 @@ controller.on('message_received', function(bot, message) {
                 console.log('Loaded existing player!\n', player);
             }
             players.push(player);
-            eventEmitter.emit('data', bot, message, rooms, player);
+            eventEmitter.emit('data', bot, message, rooms, player, players);
 
         });
     } else {
-        player = players.message.user;
-        eventEmitter.emit('data', bot, message, rooms, player);
+        player = found;
+        eventEmitter.emit('data', bot, message, rooms, player, players);
     }
 
 });
